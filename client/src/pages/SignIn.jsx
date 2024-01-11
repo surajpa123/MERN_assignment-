@@ -1,0 +1,115 @@
+import React,{useState} from 'react'
+import { Link,useNavigate } from 'react-router-dom'
+
+export function SignIn() {
+  const [formData, setFormData] = useState({});
+  const [result, setResult] = useState("");
+
+
+  const navigate = useNavigate();
+  const handelChange = (e) => {
+    setFormData({ ...formData, [e.target.id]: e.target.value });
+  };
+
+
+  const handelSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await fetch(`http://localhost:3000/auth/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+      // console.log(data)
+
+      if (data.sucess == true) {
+        navigate("/home");
+        setResult(data.sucess);
+        // Cookies.set("acess_token", data.token);
+        console.log(data.token);
+      } else {
+        setResult(data.message);
+      }
+    } catch (error) {
+      setResult(error.message);
+    }
+  };
+
+  
+  return (
+    <section>
+      <div className="flex items-center justify-center px-4 py-10 sm:px-6 sm:py-16 lg:px-8 lg:py-24">
+        <div className="xl:mx-auto xl:w-full xl:max-w-sm 2xl:max-w-md">
+          
+          <h2 className="text-center text-2xl font-bold leading-tight text-black">
+            Sign in to your account
+          </h2>
+          <p className="mt-2 text-center text-sm text-gray-600 ">
+            Don&apos;t have an account?{' '}
+
+            <Link className="font-semibold text-black transition-all duration-200 hover:underline" to={'/signup'}>
+           
+              Create a free account
+            
+            </Link>
+          </p>
+          <form onSubmit={handelSubmit} className="mt-8">
+            <div className="space-y-5">
+              <div>
+                <label htmlFor="" className="text-base font-medium text-gray-900">
+                  {' '}
+                  Email address{' '}
+                </label>
+                <div className="mt-2">
+                  <input
+                  id='email'
+                    className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
+                    type="email"
+                    placeholder="Email"
+                    onChange={handelChange}
+
+                  ></input>
+                </div>
+              </div>
+              <div>
+                <div className="flex items-center justify-between">
+                  <label htmlFor="" className="text-base font-medium text-gray-900">
+                    {' '}
+                    Password{' '}
+                  </label>
+                 
+                </div>
+                <div className="mt-2">
+                  <input
+                  id = "password"
+                    className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
+                    type="password"
+                    onChange={handelChange}
+                    placeholder="Password"
+                  ></input>
+                </div>
+              </div>
+              <div>
+                <button
+                  type="submit"
+                  className="inline-flex w-full items-center justify-center rounded-md bg-black px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80"
+                >
+                    Sign In
+                </button>
+
+                <p className="mt-2 text-center text-sm text-gray-600">
+                  {result}
+                </p>
+              </div>
+            </div>
+          </form>
+        
+        </div>
+      </div>
+    </section>
+  )
+}

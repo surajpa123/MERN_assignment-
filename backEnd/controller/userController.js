@@ -55,7 +55,7 @@ export const login = async (req,res)=>{
     });
 
 
-    const loggedUser = await User.findById(user._id).select("-password -role")
+    const loggedUser = await User.findById(user._id).select("-password")
 
 
     res.status(200).json({

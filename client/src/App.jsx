@@ -6,6 +6,7 @@ import { SignIn } from './pages/SignIn'
 import { Home } from './pages/Home'
 import { SignUp } from './pages/SignUp'
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Merchant } from './pages/Merchant'
 
 
 function App() {
@@ -19,6 +20,8 @@ function App() {
         <Route path="/" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/home" element={<Home/>} />
+
+        <Route path="/merchantDashboard" element={<Merchant/>} />
       </Routes>
       
     </BrowserRouter>

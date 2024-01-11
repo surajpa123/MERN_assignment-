@@ -3,7 +3,7 @@ import { uploadOnCloudinary } from "../utils/cloudnary.js";
 
 
 
-export const createProduct = async (req,res)=>{
+export const createProduct = async (req,res,next)=>{
 
     try {
         const { name, description, price, category, subcategory } = req.body;
@@ -17,15 +17,17 @@ export const createProduct = async (req,res)=>{
         if(role!== "merchant"){
             return res.status(401).json({message:"You are not authorized to create a product"})
         }
+        if(req.files && req.files.productImage){
 
-        const productImageLocalPath = req.files.productImage[0].path;
+            const productImageLocalPath = req.files.productImage[0].path;
 
-
-       const cloudNaryUrl = await uploadOnCloudinary(productImageLocalPath);
-
-      const image = cloudNaryUrl.url;
-
-        // Create a new product
+            console.log(productImageLocalPath)
+            const cloudNaryUrl = await uploadOnCloudinary(productImageLocalPath);
+    
+            var image = cloudNaryUrl.url;
+     
+           
+        }
 
         const product = await Product.create({
             name,
@@ -33,17 +35,20 @@ export const createProduct = async (req,res)=>{
             price,
             category,
             subcategory,
-            image,
+            image:image || 'https://xelltechnology.com/wp-content/uploads/2022/04/dummy4.jpg',
             user: req.user._id, 
         });
 
         const createProduct = await Product.findById(product._id).populate('user');
         // Save the product to the database
+        next();
 
-        return res.status(201).json({ message: 'Product created successfully.', createProduct });
+        return res.status(201).json({sucess:true, message: 'Product created successfully.', createProduct });
+
+
     } catch (error) {
         console.error(error);
-        return res.status(500).json({ message: 'Internal Server Error.' });
+        return res.status(500).json({sucess:true,  message: 'Internal Server Error.' });
     }
 }
 
@@ -56,7 +61,6 @@ export const editProduct = async (req,res)=>{
         if (!name || !description || !price || !category || !subcategory) {
             return res.status(400).json({ message: 'All fields are required.' });
         }
-
 
         const {role} = req.user;
         if(role!== "merchant"){
@@ -75,7 +79,7 @@ export const editProduct = async (req,res)=>{
 
         // Check if the product exists
         if (!product) {
-            return res.status(404).json({ message: 'Product not found.' });
+            return res.status(404).json({sucess:true,  message: 'Product not found.' });
         }
 
         product.name = name;
@@ -87,10 +91,10 @@ export const editProduct = async (req,res)=>{
 
         await product.save();
 
-        return res.json({ message: 'Product updated successfully.', product });
+        return res.json({sucess:true,  message: 'Product updated successfully.', product });
     } catch (error) {
         console.error(error);
-        return res.status(500).json({ message: 'Internal Server Error.' });
+        return res.status(500).json({sucess:false,  message: 'Internal Server Error.' });
     }
 }
 
@@ -102,7 +106,7 @@ export const getProduct =  async (req, res) => {
         return res.json({ products });
     } catch (error) {
         console.error(error);
-        return res.status(500).json({ message: 'Internal Server Error.' });
+        return res.status(500).json({sucess:false,  message: 'Internal Server Error.' });
     }
 }
 

@@ -1,5 +1,6 @@
 import React,{useState} from 'react'
 import { Link,useNavigate } from 'react-router-dom'
+import Cookies from "js-cookie"
 
 export function SignIn() {
   const [formData, setFormData] = useState({});
@@ -29,7 +30,12 @@ export function SignIn() {
       if (data.sucess == true) {
         navigate("/home");
         setResult(data.sucess);
-        // Cookies.set("acess_token", data.token);
+        Cookies.set("acess_token", data.token, { expires: 7 });
+
+        // console.log(data.user.role)
+        if(data.user.role == "merchant"){
+          navigate("/merchantDashboard");
+        }
         console.log(data.token);
       } else {
         setResult(data.message);

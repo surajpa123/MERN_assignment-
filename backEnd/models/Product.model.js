@@ -28,7 +28,7 @@ const productSchema = new mongoose.Schema({
     },
     image: {
         type: Array,
-        required: true,
+        default:"https://xelltechnology.com/wp-content/uploads/2022/04/dummy4.jpg"
     },
     user: {
         type: mongoose.Schema.Types.ObjectId,

@@ -7,6 +7,9 @@ export function Home() {
 
   const [search, setSearch] = useState("");
 
+  const [filteredData, setFilteredData] = useState([]); // Filtered data
+
+
   useEffect(() => {
     getData();
   }, [search]);
@@ -24,6 +27,8 @@ export function Home() {
       const data = await result.json();
 
       setData(data.products);
+      setFilteredData(data.products);
+
     } catch (error) {
       console.log(error);
     }
@@ -51,13 +56,44 @@ export function Home() {
     }
   };
 
-  console.log(data, "hey");
+  const handelCategory =  (e)=>{
+
+    console.log(e.target.value)
+
+    if(e.target.value == ""){
+         setFilteredData(data);
+    }else{
+
+
+      
+    const filtered = data.filter((ele)=>{
+     
+      return e.target.value == ele.category
+    
+  })
+
+  setFilteredData(filtered);
+    }
+
+
+
+
+
+    console.log(filtered,'filtered products')
+
+  }
+
+  // console.log(data, "hey");
 
   return (
     <>
-      <div className="flex gap-4 items-start">
+      <div className="flex gap-4 items-start border border-black">
+
         
-        <div className="border flex justify-center gap-4 p-4 border-red-600 w-1/3">
+        
+        <div className="border justify-center gap-4 p-4 w-1/3">
+          <div className="flex gap-4">
+
           <input
             className="flex h-10 w-1/1 rounded-md border border-black/30 bg-transparent px-3 py-2 text-sm placeholder:text-gray-600 focus:outline-none focus:ring-1 focus:ring-black/30 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
             type="text"
@@ -72,12 +108,23 @@ export function Home() {
           >
             Search
           </button>
+
+          </div>
+
+          <select onChange={handelCategory} className="mt-2 p-2  border-2" name="" id="">
+            <option value="">Selecty by Category</option>
+            <option value="electronics">Electronics</option>
+            <option value="food">Food</option>
+            <option value="furniture">Furniture</option>
+            <option value="clothing">Clothing</option>
+          </select>
+
         </div>
 
 
 
         <div className="mx-auto grid w-full max-w-7xl items-center space-y-4 px-2 py-10 md:grid-cols-2 md:gap-6 md:space-y-0 lg:grid-cols-4">
-          {data.map((ele, ind) => (
+          {filteredData.map((ele, ind) => (
             <div
               key={ind}
               className="relative aspect-[16/9]  w-auto rounded-md md:aspect-auto md:h-[400px]"

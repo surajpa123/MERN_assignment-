@@ -3,6 +3,8 @@ import Cookies from 'js-cookie';
 
 const EditProductModal = ({ isOpen, onClose, product }) => {
 
+    const API = import.meta.env.VITE_API_URL;
+
   const [editedProduct, setEditedProduct] = useState({...product})
 
   const handleInputChange = (e) => {
@@ -30,7 +32,7 @@ const EditProductModal = ({ isOpen, onClose, product }) => {
         console.log(editedProduct._id)
 
         const result = await fetch(
-            `http://localhost:3000/products/edit/${editedProduct._id}`,
+            `${API}/products/edit/${editedProduct._id}`,
             {
               method: "PATCH",
               headers: {

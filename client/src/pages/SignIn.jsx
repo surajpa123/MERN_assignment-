@@ -5,7 +5,9 @@ import Cookies from "js-cookie"
 export function SignIn() {
   const [formData, setFormData] = useState({});
   const [result, setResult] = useState("");
+  const [loading,setLoading] = useState(false);
 
+  const API = import.meta.env.VITE_API_URL;
 
   const navigate = useNavigate();
   const handelChange = (e) => {
@@ -15,8 +17,9 @@ export function SignIn() {
 
   const handelSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
-      const res = await fetch(`http://localhost:3000/auth/login`, {
+      const res = await fetch(`${API}/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -37,11 +40,14 @@ export function SignIn() {
         if(data.user.role == "merchant"){
           navigate("/merchantDashboard");
         }
+        setLoading(false)
         console.log(data.token);
       } else {
         setResult(data.message);
+        setLoading(false);
       }
     } catch (error) {
+      setLoading(false);
       setResult(error.message);
     }
   };
@@ -105,7 +111,7 @@ export function SignIn() {
                   type="submit"
                   className="inline-flex w-full items-center justify-center rounded-md bg-black px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80"
                 >
-                    Sign In
+                 {loading ? "Loading ..." :  "Sign In" }  
                 </button>
 
                 <p className="mt-2 text-center text-sm text-gray-600">

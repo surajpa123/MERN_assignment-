@@ -9,6 +9,9 @@ export const Merchant = () => {
 
   const navigate = useNavigate();
 
+  const API = import.meta.env.VITE_API_URL;
+
+
     const [formData, setFormData] = useState({
       name:"",
       description:"",
@@ -44,7 +47,7 @@ export const Merchant = () => {
           // }
 
           console.log(formData);
-          const res = await fetch("http://localhost:3000/products/create",{
+          const res = await fetch(`${API}/products/create`,{
           method:"POST",
           headers: {
             "authorization" : token,

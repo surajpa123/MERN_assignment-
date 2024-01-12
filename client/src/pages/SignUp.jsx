@@ -9,6 +9,9 @@ const [formData,setFormData] = useState({})
 const [result, setResult] = useState("");
 const [loading, setLoading] = useState(false);
 
+const API = import.meta.env.VITE_API_URL;
+
+
 const navigate  = useNavigate();
 const handelChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
@@ -19,7 +22,7 @@ const handelChange = (e) => {
     e.preventDefault();
     try {
       setLoading(true);
-      const res = await fetch(`http://localhost:3000/auth/register`, {
+      const res = await fetch(`${API}/auth/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -33,11 +36,14 @@ console.log("Hey")
       setLoading(false);
       if (data.sucess == true) {
         navigate("/");
+        setLoading(false)
       } else {
         setResult(data.message);
+        setLoading(false);
       }
     } catch (error) {
       setResult(error.message);
+      setLoading(false);
     }
   };
 
@@ -118,7 +124,7 @@ console.log("Hey")
                   type="submit"
                   className="inline-flex w-full items-center justify-center rounded-md bg-black px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80"
                 >
-                    Sign Up
+                 {loading ? "Loading ..." :"Sign Up"}  
                 </button>
                 <p className="mt-2 text-center text-sm text-gray-600">
                   {result}

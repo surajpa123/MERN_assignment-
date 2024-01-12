@@ -8,6 +8,9 @@ export function Home() {
 
   const role = Cookies.get("role")
 
+  const API = import.meta.env.VITE_API_URL;
+
+
   console.log(role)
 
   const [search, setSearch] = useState("");
@@ -36,7 +39,7 @@ export function Home() {
 
   const getData = async () => {
     try {
-      const result = await fetch("http://localhost:3000/products", {
+      const result = await fetch(`${API}/products`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -58,7 +61,7 @@ export function Home() {
     console.log(search)
     if (search.length > 0) {
       const result = await fetch(
-        `http://localhost:3000/products/search?name=${search}`,
+        `${API}/products/search?name=${search}`,
         {
           method: "GET",
           headers: {

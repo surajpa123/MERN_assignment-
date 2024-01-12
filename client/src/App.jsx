@@ -26,9 +26,11 @@ function App() {
         <Route path="/" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
 
+        <Route path="/home" element={<Home/>} />
+
+
         <Route element = {<PrivateRoute/>}>
 
-        <Route path="/home" element={<Home/>} />
 
 
         <Route path='/merchantProdView' element = {<MerchantProdView/>}></Route>

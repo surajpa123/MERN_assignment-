@@ -28,17 +28,17 @@ export function SignIn() {
       });
 
       const data = await res.json();
-      // console.log(data)
+      console.log(data)
 
       if (data.sucess == true) {
-        navigate("/home");
+       
         setResult(data.sucess);
         Cookies.set("acess_token", data.token, { expires: 7 });
         Cookies.set("role", data.user.role, { expires:7});
-
-         console.log(data.user.role)
         if(data.user.role == "merchant"){
           navigate("/merchantDashboard");
+        }else{
+          navigate("/home");
         }
         setLoading(false)
         console.log(data.token);

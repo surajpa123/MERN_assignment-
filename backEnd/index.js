@@ -12,18 +12,18 @@ const app = express();
 
 app.use(cors());
 
-app.use(
-  cors({
-    allowedHeaders: ["Content-type", "Authorization"]
-  })
-);
+// app.use(
+//   cors({
+//     allowedHeaders: ["Content-type", "Authorization"]
+//   })
+// );
 
-app.use(cors({ origin: '*' }));
+// app.use(cors({ origin: '*' }));
 
 
-app.use(cors({ origin: 'https://mern-assignment-pink.vercel.app'}));
+// app.use(cors({ origin: 'https://mern-assignment-pink.vercel.app'}));
 
-app.use(cors({ origin: 'http://localhost:5173' }));
+// app.use(cors({ origin: 'http://localhost:5173' }));
 
 
 env.config();

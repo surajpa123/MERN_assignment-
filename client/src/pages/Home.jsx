@@ -159,7 +159,7 @@ export function Home() {
                   Category - {ele.category} &rarr; {ele.subcategory}
                 </p>
 
-                {role ? (
+                {role == "merchant" ? (
                   <button
                     onClick={()=> handleEditClick(ele)}
                     className="mt-2 inline-flex cursor-pointer items-center text-sm font-semibold text-white"

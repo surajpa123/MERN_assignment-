@@ -10,6 +10,7 @@ import { Merchant } from './pages/Merchant'
 import { PrivateRoute } from './components/PrivateRoute'
 import { EditProduct } from './pages/EditProduct'
 import { MerchantProdView } from './pages/MerchantProdView'
+import { Header } from './components/Header'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -18,13 +19,17 @@ function App() {
     <>
     <BrowserRouter>
 
+    <Header/>
+
       <Routes>
 
         <Route path="/" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/home" element={<Home/>} />
 
         <Route element = {<PrivateRoute/>}>
+
+        <Route path="/home" element={<Home/>} />
+
 
         <Route path='/merchantProdView' element = {<MerchantProdView/>}></Route>
 

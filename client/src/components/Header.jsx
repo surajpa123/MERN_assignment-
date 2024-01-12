@@ -126,7 +126,19 @@ export function Header() {
                         </span>
                       </a>
                     ))}
+
+
+        {token ? <SignOut  callBack={()=> {
+     Cookies.remove("acess_token");
+     Cookies.remove("role");
+     navigate("/")
+  }}  /> : ""}
+      
                   </nav>
+
+      
+
+
                 </div>
 
               

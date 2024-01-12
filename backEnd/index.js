@@ -4,6 +4,18 @@ import mongoose from "mongoose";
 import env from "dotenv";
 import userRouter from "./routes/user.route.js";
 import productRouter from "./routes/product.route.js"
+import cors from "cors"
+
+app.use(
+  cors({
+    allowedHeaders: ["Content-type", "Authorization"],
+  })
+);
+
+app.use(cors({ origin: '*' }));
+
+
+app.use(cors({ origin: 'http://localhost:5173' }));
 
 const app = express();
 

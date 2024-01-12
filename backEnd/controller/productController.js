@@ -107,7 +107,7 @@ export const editProduct = async (req,res)=>{
 export const getProduct =  async (req, res) => {
     try {
         // Fetch all products
-        const products = await Product.find();
+        const products = await Product.find().sort({ createdAt: -1 });
         return res.json({ products });
     } catch (error) {
         console.error(error);

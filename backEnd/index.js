@@ -19,7 +19,10 @@ app.use(
 app.use(cors({ origin: '*' }));
 
 
-app.use(cors({ origin: 'https://mern-assignment-pink.vercel.app/'}));
+app.use(cors({ origin: 'https://mern-assignment-pink.vercel.app'}));
+
+app.use(cors({ origin: 'http://localhost:5173' }));
+
 
 env.config();
 app.use(express.json());

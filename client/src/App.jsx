@@ -31,8 +31,6 @@ function App() {
 
         <Route element = {<PrivateRoute/>}>
 
-
-
         <Route path='/merchantProdView' element = {<MerchantProdView/>}></Route>
 
         <Route path='/edit/:id' element = {<EditProduct/>}></Route>

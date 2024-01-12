@@ -2,16 +2,18 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import Cookies from "js-cookie";
 import EditProductModal from "../components/EditProductModal";
-
+import { useNavigate } from "react-router-dom";
 export function Home() {
   const [data, setData] = useState([]);
 
-  const role = Cookies.get("role")
+  const navigate = useNavigate();
 
+  const role = Cookies.get("role");
+
+ 
   const API = import.meta.env.VITE_API_URL;
 
-
-  console.log(role)
+  console.log(role);
 
   const [search, setSearch] = useState("");
 
@@ -57,19 +59,15 @@ export function Home() {
   };
 
   const searchData = async () => {
-
-    console.log(search)
+    console.log(search);
     if (search.length > 0) {
-      const result = await fetch(
-        `${API}/products/search?name=${search}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: Cookies.get("acess_token"),
-          },
-        }
-      );
+      const result = await fetch(`${API}/products/search?name=${search}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: Cookies.get("acess_token"),
+        },
+      });
 
       const data = await result.json();
       console.log(data);
@@ -79,7 +77,6 @@ export function Home() {
       setData(data);
     }
   };
-
 
   const handelSubCategory = (e) => {
     console.log(e.target.value);
@@ -115,9 +112,12 @@ export function Home() {
 
   // console.log(data, "hey");
 
-
   return (
+
     <>
+    {
+      role == undefined ? <h1>Log in first</h1> && navigate("/") : 
+    
       <div className="flex gap-4 items-start border border-black">
         <div className="border justify-center gap-4 p-4 w-1/3">
           <div className="flex gap-4">
@@ -150,7 +150,6 @@ export function Home() {
             <option value="clothing">Clothing</option>
           </select>
 
-          
           <select
             onChange={handelSubCategory}
             className="mt-2 p-2  border-2"
@@ -194,7 +193,7 @@ export function Home() {
 
                 {role == "merchant" ? (
                   <button
-                    onClick={()=> handleEditClick(ele)}
+                    onClick={() => handleEditClick(ele)}
                     className="mt-2 inline-flex cursor-pointer items-center text-sm font-semibold text-white"
                   >
                     Edit Product
@@ -215,6 +214,7 @@ export function Home() {
           ))}
         </div>
       </div>
+}
     </>
   );
 }

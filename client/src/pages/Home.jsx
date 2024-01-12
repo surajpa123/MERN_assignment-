@@ -80,6 +80,23 @@ export function Home() {
     }
   };
 
+
+  const handelSubCategory = (e) => {
+    console.log(e.target.value);
+
+    if (e.target.value == "") {
+      setFilteredData(data);
+    } else {
+      const filtered = data.filter((ele) => {
+        return e.target.value == ele.subcategory;
+      });
+
+      setFilteredData(filtered);
+    }
+
+    console.log(filtered, "filtered products");
+  };
+
   const handelCategory = (e) => {
     console.log(e.target.value);
 
@@ -131,6 +148,19 @@ export function Home() {
             <option value="food">Food</option>
             <option value="furniture">Furniture</option>
             <option value="clothing">Clothing</option>
+          </select>
+
+          
+          <select
+            onChange={handelSubCategory}
+            className="mt-2 p-2  border-2"
+            name=""
+            id=""
+          >
+            <option value="">Selecty by Subcategory</option>
+            <option value="smart phone">Smart Phones</option>
+            <option value="tablet">Tablet</option>
+            <option value="laptop">Laptop</option>
           </select>
         </div>
 

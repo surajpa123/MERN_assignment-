@@ -81,6 +81,7 @@ export const editProduct = async (req,res)=>{
 
         const product = await Product.findById(req.params.id);
 
+        console.log(req.params.id, product)
         // Check if the product exists
         if (!product) {
             return res.status(404).json({sucess:true,  message: 'Product not found.' });
@@ -91,7 +92,7 @@ export const editProduct = async (req,res)=>{
         product.price = price;
         product.category = category;
         product.subcategory = subcategory;
-        product.image = image;
+        // product.image = image;
 
         await product.save();
 

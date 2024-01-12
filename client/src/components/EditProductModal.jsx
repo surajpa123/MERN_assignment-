@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Cookies from 'js-cookie';
 
 const EditProductModal = ({ isOpen, onClose, product }) => {
 
@@ -12,18 +13,21 @@ const EditProductModal = ({ isOpen, onClose, product }) => {
     }));
   };
 
-//   useEffect(()=>{
-//     setEditedProduct(product)
-//   })
+  useEffect(()=>{
+    setEditedProduct({...product});
+    setRes("")
+
+  },[isOpen,product])
 
   const [res,setRes] =  useState('')                                                                               
 
 
-console.log(editedProduct,'editedProduct')
   const handleSaveChanges = async () => {
     // Add logic to save changes to the backend or update state
 
     try {
+
+        console.log(editedProduct._id)
 
         const result = await fetch(
             `http://localhost:3000/products/edit/${editedProduct._id}`,
@@ -31,8 +35,9 @@ console.log(editedProduct,'editedProduct')
               method: "PATCH",
               headers: {
                 "Content-Type": "application/json",
-                Authorization: Cookies.get("acess_token"),
+                authorization: Cookies.get("acess_token"),
               },
+              body: JSON.stringify(editedProduct),
             }
           );
     
@@ -40,7 +45,7 @@ console.log(editedProduct,'editedProduct')
 
           console.log(data);
     
-          setData(data.products);
+        //   setData(data.products);
 
           if(data.sucess ==  true){
 
@@ -50,6 +55,7 @@ console.log(editedProduct,'editedProduct')
         
       
   
+
 
   
   

@@ -32,7 +32,7 @@ export function Home() {
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [search, selectedProduct]);
 
   const getData = async () => {
     try {
@@ -54,6 +54,8 @@ export function Home() {
   };
 
   const searchData = async () => {
+
+    console.log(search)
     if (search.length > 0) {
       const result = await fetch(
         `http://localhost:3000/products/search?name=${search}`,
@@ -69,7 +71,7 @@ export function Home() {
       const data = await result.json();
       console.log(data);
 
-      setData(data.products);
+      setFilteredData(data.products);
     } else {
       setData(data);
     }
@@ -92,6 +94,7 @@ export function Home() {
   };
 
   // console.log(data, "hey");
+
 
   return (
     <>

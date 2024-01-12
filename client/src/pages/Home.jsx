@@ -1,18 +1,38 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
 import Cookies from "js-cookie";
+import EditProductModal from "../components/EditProductModal";
 
 export function Home() {
   const [data, setData] = useState([]);
+
+  const role = Cookies.get("role")
+
+  console.log(role)
 
   const [search, setSearch] = useState("");
 
   const [filteredData, setFilteredData] = useState([]); // Filtered data
 
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [isEditModalOpen, setEditModalOpen] = useState(false);
+
+  const handleEditClick = (ele) => {
+    setSelectedProduct(ele);
+    setEditModalOpen(true);
+    console.log(ele);
+  };
+
+  const handleModalClose = () => {
+    setSelectedProduct(null);
+    setEditModalOpen(false);
+  };
+
+  console.log(selectedProduct, "selected");
 
   useEffect(() => {
     getData();
-  }, [search]);
+  }, []);
 
   const getData = async () => {
     try {
@@ -28,7 +48,6 @@ export function Home() {
 
       setData(data.products);
       setFilteredData(data.products);
-
     } catch (error) {
       console.log(error);
     }
@@ -56,72 +75,58 @@ export function Home() {
     }
   };
 
-  const handelCategory =  (e)=>{
+  const handelCategory = (e) => {
+    console.log(e.target.value);
 
-    console.log(e.target.value)
+    if (e.target.value == "") {
+      setFilteredData(data);
+    } else {
+      const filtered = data.filter((ele) => {
+        return e.target.value == ele.category;
+      });
 
-    if(e.target.value == ""){
-         setFilteredData(data);
-    }else{
-
-
-      
-    const filtered = data.filter((ele)=>{
-     
-      return e.target.value == ele.category
-    
-  })
-
-  setFilteredData(filtered);
+      setFilteredData(filtered);
     }
 
-
-
-
-
-    console.log(filtered,'filtered products')
-
-  }
+    console.log(filtered, "filtered products");
+  };
 
   // console.log(data, "hey");
 
   return (
     <>
       <div className="flex gap-4 items-start border border-black">
-
-        
-        
         <div className="border justify-center gap-4 p-4 w-1/3">
           <div className="flex gap-4">
+            <input
+              className="flex h-10 w-1/1 rounded-md border border-black/30 bg-transparent px-3 py-2 text-sm placeholder:text-gray-600 focus:outline-none focus:ring-1 focus:ring-black/30 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
+              type="text"
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search available products..."
+            ></input>
 
-          <input
-            className="flex h-10 w-1/1 rounded-md border border-black/30 bg-transparent px-3 py-2 text-sm placeholder:text-gray-600 focus:outline-none focus:ring-1 focus:ring-black/30 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
-            type="text"
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search available products..."
-          ></input>
-
-          <button
-            type="submit"
-            onClick={searchData}
-            className="inline-flex w-1/4 items-center justify-center rounded-md bg-black px-1.5 py-1.5 font-semibold leading-7 text-white hover:bg-black/80"
-          >
-            Search
-          </button>
-
+            <button
+              type="submit"
+              onClick={searchData}
+              className="inline-flex w-1/4 items-center justify-center rounded-md bg-black px-1.5 py-1.5 font-semibold leading-7 text-white hover:bg-black/80"
+            >
+              Search
+            </button>
           </div>
 
-          <select onChange={handelCategory} className="mt-2 p-2  border-2" name="" id="">
+          <select
+            onChange={handelCategory}
+            className="mt-2 p-2  border-2"
+            name=""
+            id=""
+          >
             <option value="">Selecty by Category</option>
             <option value="electronics">Electronics</option>
             <option value="food">Food</option>
             <option value="furniture">Furniture</option>
             <option value="clothing">Clothing</option>
           </select>
-
         </div>
-
-
 
         <div className="mx-auto grid w-full max-w-7xl items-center space-y-4 px-2 py-10 md:grid-cols-2 md:gap-6 md:space-y-0 lg:grid-cols-4">
           {filteredData.map((ele, ind) => (
@@ -151,9 +156,24 @@ export function Home() {
                   Category - {ele.category} &rarr; {ele.subcategory}
                 </p>
 
-                <button className="mt-2 inline-flex cursor-pointer items-center text-sm font-semibold text-white">
-                  Shop Now &rarr;
-                </button>
+                {role ? (
+                  <button
+                    onClick={()=> handleEditClick(ele)}
+                    className="mt-2 inline-flex cursor-pointer items-center text-sm font-semibold text-white"
+                  >
+                    Edit Product
+                  </button>
+                ) : (
+                  <button className="mt-2 inline-flex cursor-pointer items-center text-sm font-semibold text-white">
+                    Shop Now &rarr;
+                  </button>
+                )}
+
+                <EditProductModal
+                  isOpen={isEditModalOpen}
+                  onClose={handleModalClose}
+                  product={selectedProduct}
+                />
               </div>
             </div>
           ))}

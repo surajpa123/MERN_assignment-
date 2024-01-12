@@ -67,13 +67,17 @@ export const editProduct = async (req,res)=>{
             return res.status(401).json({message:"You are not authorized to edit product"})
         }
 
+        if(req.files && req.files.productImage){
 
-        const productImageLocalPath = req.files.productImage[0].path;
+            const productImageLocalPath = req.files.productImage[0].path;
 
-
-        const cloudNaryUrl = await uploadOnCloudinary(productImageLocalPath);
- 
-        const image = cloudNaryUrl.url;
+            console.log(productImageLocalPath)
+            const cloudNaryUrl = await uploadOnCloudinary(productImageLocalPath);
+    
+            var image = cloudNaryUrl.url;
+     
+           
+        }
 
         const product = await Product.findById(req.params.id);
 

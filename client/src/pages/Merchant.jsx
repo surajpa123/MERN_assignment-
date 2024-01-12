@@ -1,10 +1,13 @@
 import React,{useState} from 'react'
 import { Link,useAsyncError,useNavigate } from 'react-router-dom'
 import Cookies from "js-cookie"
+import { SignOut } from '../components/SignOut'
 
 
 
 export const Merchant = () => {
+
+  const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
       name:"",
@@ -22,9 +25,7 @@ export const Merchant = () => {
 
 
     const handelSubmit = async () =>{
-
       // e.preventDefault();
-
       try {
 
         
@@ -215,9 +216,17 @@ const handelChange = (e) => {
         </div>
       </div>
     </form>
+
+  <SignOut callBack={()=> {
+     Cookies.remove("acess_token");
+     Cookies.remove("role");
+     navigate("/")
+  }} />
   
   </div>
+
 </div>
+
 </section>
 
     </div>

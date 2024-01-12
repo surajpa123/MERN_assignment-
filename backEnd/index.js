@@ -12,7 +12,7 @@ const app = express();
 
 app.use(
   cors({
-    allowedHeaders: ["Content-type", "Authorization"],
+    allowedHeaders: ["Content-type", "Authorization"]
   })
 );
 
